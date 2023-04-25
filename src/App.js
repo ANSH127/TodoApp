@@ -10,6 +10,8 @@ import Create from './components/Create';
 import { createTheme,ThemeProvider} from '@mui/material';
 import Notes from './components/Notes';
 import Layout from './components/Layout';
+import Login from './components/Login';
+import SignUp from './components/SignUp';
 const theme=createTheme({
   palette:{
     primary:{
@@ -29,6 +31,8 @@ function App() {
         <Route/>
         <Route exact path="/" element={<Notes/>}/>
         <Route exact path="/create" element={<Create/>}/>
+        <Route exact path="/login" element={<Login/>}/>
+        <Route exact path="/signup" element={<SignUp/>}/>
 
       </Routes>
       </Layout>

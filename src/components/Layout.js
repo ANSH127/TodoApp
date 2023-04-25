@@ -14,7 +14,12 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import format from 'date-fns/format';
 import Avatar from '@mui/material/Avatar';
-
+import LoginIcon from '@mui/icons-material/Login';
+import AddIcon from '@mui/icons-material/Add';
+import { useEffect, useState } from 'react';
+import supabase from '../config/SupabaseClient';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { toast } from 'react-toastify';
 const drawerWidth = 240;
 
 const active = {
@@ -22,6 +27,27 @@ const active = {
 }
 
 export default function Layout({ children }) {
+    const [user, setUser] = useState(false);
+    const fetchUser = async () => {
+        const { data: { user } } = await supabase.auth.getUser()
+        if (user) {
+            setUser(true);
+
+
+        }
+        else {
+            console.log('no user');
+        }
+    }
+
+    useEffect(() => {
+        fetchUser();
+
+
+
+
+    }, [])
+
     const location = useLocation()
     const navigate = useNavigate()
     const menuItems = [
@@ -45,13 +71,14 @@ export default function Layout({ children }) {
                 elevation={0}
             >
                 <Toolbar>
-                    <Typography variant="h6" noWrap component="div" sx={{flexGrow:1}} >
-                       Today is the {format(new Date(), 'do MMMM Y')}
+                    <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }} >
+                        Today is the {format(new Date(), 'do MMMM Y')}
                     </Typography>
+
                     <Typography>
                         Ansh
                     </Typography>
-                    <Avatar alt="Remy Sharp" src="/60111.jpg" sx={{ml:2}} />
+                    <Avatar alt="Remy Sharp" src="/60111.jpg" sx={{ ml: 2 }} />
 
 
                 </Toolbar>
@@ -92,6 +119,66 @@ export default function Layout({ children }) {
 
                         </ListItem>
                     ))}
+
+                    {!user && <ListItem>
+                        <ListItemButton
+                            onClick={() => navigate('/login')}
+
+
+                        >
+
+                            <ListItemIcon><LoginIcon color='secondary' /></ListItemIcon>
+                            <ListItemText primary='Login' />
+
+
+                        </ListItemButton>
+                    </ListItem>}
+
+                    {!user && <ListItem>
+                        <ListItemButton
+                            onClick={() => navigate('/signup')}
+
+                        >
+
+                            <ListItemIcon><AddIcon color='secondary' /></ListItemIcon>
+                            <ListItemText primary='Create An Account' />
+
+
+                        </ListItemButton>
+                    </ListItem>}
+
+
+                    {user &&
+                        <ListItem>
+                            <ListItemButton
+                                onClick={async () => {
+
+                                    const { error } = await supabase.auth.signOut()
+                                    if (error) {
+                                        console.log('Error logging out:', error.message);
+                                        toast.error(error.message);
+                                        return;
+                                    }
+
+
+                                    navigate('/login')
+
+
+
+                                }
+                                }
+
+                            >
+
+                                <ListItemIcon><LogoutIcon color='secondary' /></ListItemIcon>
+                                <ListItemText primary='Logout' />
+
+
+                            </ListItemButton>
+                        </ListItem>
+
+                    }
+
                 </List>
             </Drawer>
             <Box

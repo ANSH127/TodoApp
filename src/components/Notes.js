@@ -9,6 +9,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 function Notes() {
   const [notes, setNotes] = useState([]);
+  const [user, setUser] = useState('Anonymous');
   const fetchNotes = async () => {
 
     const { data, error } = await supabase
@@ -21,10 +22,24 @@ function Notes() {
     console.log(data);
     setNotes(data);
   }
+  const fetchUser = async () => {
+    const { data: { user } } = await supabase.auth.getUser()
+    if(user){
+      setUser(user.user_metadata.username)
+      
+
+    }
+    else{
+      console.log('no user');
+    }
+  }
+
+    
 
   useEffect(() => {
     fetchNotes();
-
+    fetchUser();
+    
   }, [])
 
   const handleDelete = async (id) => {
