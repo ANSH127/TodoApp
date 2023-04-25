@@ -50,10 +50,14 @@ function SignUp() {
         }
         if (data) {
             toast.success('User Created Successfully')
+            toast.warning('Email Verification Link Sent to your Email')
         }
+
+        
 
 
     }
+
     return (
 
         <Container>

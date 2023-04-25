@@ -1,4 +1,4 @@
-import { React, useState } from 'react'
+import { React, useState,useEffect } from 'react'
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -20,6 +20,27 @@ const field = {
 
 }
 function Create() {
+    const [isauth, setIsauth] = useState(false);
+    const fetchUser = async () => {
+        const { data: { user } } = await supabase.auth.getUser()
+        if(user){
+            setIsauth(true);
+
+          
+    
+        }
+        else{
+            toast.warning(' Login First to Add Notes');
+        }
+      }
+
+    useEffect(() => {
+        fetchUser();
+
+        
+      
+    }, [])
+    
     const navigate = useNavigate()
     const [data, setData] = useState({
         title: '',
@@ -42,7 +63,7 @@ function Create() {
         }
 
 
-        if (data.title && data.description) {
+        if (data.title && data.description && data.category && isauth) {
 
             const { error } = await supabase
                 .from('Todo')
@@ -110,6 +131,7 @@ function Create() {
                         color='primary'
                         variant='contained'
                         endIcon={<KeyboardArrowRightOutlinedIcon />}
+                        disabled={isauth?false:true}
                     >
                         Submit
                     </Button>

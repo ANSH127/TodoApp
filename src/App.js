@@ -28,11 +28,11 @@ function App() {
       {/* <Navbar/> */}
       <Layout>
       <Routes>
-        <Route/>
         <Route exact path="/" element={<Notes/>}/>
         <Route exact path="/create" element={<Create/>}/>
         <Route exact path="/login" element={<Login/>}/>
         <Route exact path="/signup" element={<SignUp/>}/>
+        
 
       </Routes>
       </Layout>

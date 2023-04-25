@@ -28,10 +28,12 @@ const active = {
 
 export default function Layout({ children }) {
     const [user, setUser] = useState(false);
+    const[username,setUsername]=useState('Anonymus');
     const fetchUser = async () => {
         const { data: { user } } = await supabase.auth.getUser()
         if (user) {
             setUser(true);
+            setUsername(user.user_metadata.username);
 
 
         }
@@ -76,7 +78,7 @@ export default function Layout({ children }) {
                     </Typography>
 
                     <Typography>
-                        Ansh
+                        {username}
                     </Typography>
                     <Avatar alt="Remy Sharp" src="/60111.jpg" sx={{ ml: 2 }} />
 
@@ -160,7 +162,7 @@ export default function Layout({ children }) {
                                         return;
                                     }
 
-
+                                    setUser(false);
                                     navigate('/login')
 
 
