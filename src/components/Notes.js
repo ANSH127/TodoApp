@@ -9,35 +9,37 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 function Notes() {
   const [notes, setNotes] = useState([]);
-  const fetchNotes = async () => {
 
+  const fetchNotes = async () => {
+    
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) {
+      toast.warning('Login First to see your Notes');
+      return;
+    }
     const { data, error } = await supabase
       .from('Todo')
       .select()
+      .eq('user_id', user.id)
     if (error) {
       console.log(error);
       return;
     }
-    console.log(data);
+
+    // console.log(data);
+    if(data.length===0){
+      toast.warning('No Notes Found');
+    }
+    // console.log(userid);
     setNotes(data);
   }
-  const fetchUser = async () => {
-    const { data: { user } } = await supabase.auth.getUser()
-    if(user){
-      console.log(user);
-      
-
-    }
-    else{
-      console.log('no user');
-    }
-  }
+  
 
     
 
   useEffect(() => {
+    
     fetchNotes();
-    fetchUser();
     
   }, [])
 

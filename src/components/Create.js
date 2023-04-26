@@ -21,10 +21,13 @@ const field = {
 }
 function Create() {
     const [isauth, setIsauth] = useState(false);
+    const [userid, setUserid] = useState(null);
     const fetchUser = async () => {
         const { data: { user } } = await supabase.auth.getUser()
         if(user){
             setIsauth(true);
+            console.log(user);
+            setUserid(user.id);
 
           
     
@@ -67,7 +70,7 @@ function Create() {
 
             const { error } = await supabase
                 .from('Todo')
-                .insert({ title: data.title, description: data.description, category: data.category })
+                .insert({ title: data.title, description: data.description, category: data.category, user_id:userid })
             if (error) {
                 toast.error('Something went wrong')
                 console.log(error)
