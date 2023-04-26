@@ -9,9 +9,9 @@ import {
 import Create from './components/Create';
 import { createTheme,ThemeProvider} from '@mui/material';
 import Notes from './components/Notes';
-import Layout from './components/Layout';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
+import MiniDrawer from './components/MiniDrawer';
 const theme=createTheme({
   palette:{
     primary:{
@@ -25,17 +25,17 @@ function App() {
     <ThemeProvider theme={theme}>
 
     <Router>
-      {/* <Navbar/> */}
-      <Layout>
+      <MiniDrawer>
       <Routes>
         <Route exact path="/" element={<Notes/>}/>
         <Route exact path="/create" element={<Create/>}/>
         <Route exact path="/login" element={<Login/>}/>
         <Route exact path="/signup" element={<SignUp/>}/>
+        <Route exact path="/drawer" element={<MiniDrawer/>}/>
         
 
       </Routes>
-      </Layout>
+      </MiniDrawer>
     </Router>
     </ThemeProvider>
     

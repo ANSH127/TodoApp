@@ -38,6 +38,8 @@ function Login() {
             console.log(data);
             setTimeout(() => {
                 navigate('/')
+                // reload the page
+                window.location.reload();
 
                 
             }, 1);
